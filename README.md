@@ -1,4 +1,4 @@
-# Naive RAG vs Hybrid Retrieval vs Recursive Chunking on SQuAD v2
+# Effects of Hybrid Retrieval and Recursive Chunking on RAG Performance
 
 [![Course](https://img.shields.io/badge/Course-YZM5109%20LLM-blue.svg)](#overview)
 [![Environment](https://img.shields.io/badge/Environment-Kaggle%20Notebook-20BEFF.svg)](#how-to-run-in-kaggle)
