@@ -1,0 +1,42 @@
+{
+  "seed": 42,
+  "dataset": "rajpurkar/squad_v2 (train split, 50 docs with >=15 paragraphs)",
+  "num_documents": 50,
+  "dev_set_size": 50,
+  "test_set_size": {
+    "answerable": 100,
+    "unanswerable": 20
+  },
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2 (normalized, FAISS IndexFlatIP)",
+  "generation_model": "Qwen/Qwen2.5-1.5B-Instruct (fp16)",
+  "top_k": 3,
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 30
+  },
+  "chunking": {
+    "basic": {
+      "size_chars": 350,
+      "stride_chars": 300
+    },
+    "recursive": {
+      "max_chars": 750,
+      "split": "paragraph -> sentence packing -> hard split"
+    }
+  },
+  "hybrid": {
+    "bm25": "BM25Okapi, tokens=lowercase word tokens w/o punctuation",
+    "fusion": "Reciprocal Rank Fusion, k=60",
+    "candidates_per_retriever": 15
+  },
+  "gold_evidence_mapping": "chunk (same doc) overlaps gold answer character span",
+  "abstention_detection_keywords": [
+    "unanswerable",
+    "not mentioned",
+    "no information",
+    "cannot"
+  ],
+  "faithfulness": "lexical overlap of answer tokens with retrieved context; abstentions excluded",
+  "hardware": "Tesla T4",
+  "system_prompt": "Answer concisely using ONLY the context. If not in context, output ONLY: UNANSWERABLE"
+}

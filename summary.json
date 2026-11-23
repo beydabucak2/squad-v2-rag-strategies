@@ -1,0 +1,50 @@
+[
+  {
+    "Condition": "C1_Naive",
+    "Chunks": 5262,
+    "Recall@3": 73.0,
+    "MRR": 65.17,
+    "EM": 20.0,
+    "F1": 38.8,
+    "Faithfulness": 86.94,
+    "FalseAbst(ans)": 7.0,
+    "Abstention(unans)": 40.0,
+    "Time(s)": 91.9
+  },
+  {
+    "Condition": "C2_Hybrid",
+    "Chunks": 5262,
+    "Recall@3": 80.0,
+    "MRR": 70.5,
+    "EM": 16.0,
+    "F1": 36.04,
+    "Faithfulness": 88.55,
+    "FalseAbst(ans)": 4.0,
+    "Abstention(unans)": 35.0,
+    "Time(s)": 101.4
+  },
+  {
+    "Condition": "C3_Recursive",
+    "Chunks": 3429,
+    "Recall@3": 79.0,
+    "MRR": 68.67,
+    "EM": 18.0,
+    "F1": 36.73,
+    "Faithfulness": 86.97,
+    "FalseAbst(ans)": 4.0,
+    "Abstention(unans)": 20.0,
+    "Time(s)": 106.7
+  },
+  {
+    "Condition": "C4_Combined",
+    "Chunks": 3429,
+    "Recall@3": 85.0,
+    "MRR": 77.17,
+    "EM": 20.0,
+    "F1": 37.95,
+    "Faithfulness": 89.1,
+    "FalseAbst(ans)": 1.0,
+    "Abstention(unans)": 35.0,
+    "Time(s)": 108.4
+  }
+]
