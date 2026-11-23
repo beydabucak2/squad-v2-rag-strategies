@@ -137,35 +137,44 @@ Main points:
 
 ## How to Run in Kaggle
 
-This project was run in a **Kaggle Notebook**.
+This project was run in **Kaggle Notebooks**. There are two notebooks:
 
-### 1. Create a new notebook
+| Notebook | What it does |
+| :--- | :--- |
+| `main-code.ipynb` | Builds the data, chunks, and indexes. Runs C1 to C4 and saves all results. |
+| `output-code.ipynb` | Reads the saved results. Makes the tables, error examples, and the two charts for the report. |
+
+### Part 1: Run the experiment (`main-code.ipynb`)
 
 1. Sign in to [Kaggle](https://www.kaggle.com/) and click **Code -> New Notebook**.
-2. Open the **Settings** panel on the right side:
+2. Upload `main-code.ipynb` (**File -> Upload Notebook**).
+3. Open the **Settings** panel on the right side:
    - Turn on **Internet**. The notebook needs it to download `datasets`, `faiss-cpu`, `rank_bm25`, `sentence-transformers`, and the model weights.
    - Choose a GPU, for example **GPU T4 x2**.
+4. Click **Run All**. The first cell installs the extra packages:
 
-### 2. Add the code
+   ```python
+   !pip install -q faiss-cpu rank_bm25 datasets sentence-transformers
+   ```
 
-Upload `llm-assignment-2.ipynb` (**File -> Upload Notebook**), or copy the code cells into a new notebook. The first cell installs the extra packages:
+5. The notebook will:
+   1. Load `rajpurkar/squad_v2` and build the 50-document corpus, the dev set, and the test set.
+   2. Build the basic chunks (5,262) and the recursive chunks (3,429), with FAISS and BM25 indexes.
+   3. Load `Qwen/Qwen2.5-1.5B-Instruct` and test C1, C2, C3, and C4 on all 120 test questions.
+   4. Save the predictions, config, prompts, summary metrics, and `fig1_scores.png` in `/kaggle/working/rag_outputs/`. It also makes `rag_outputs.zip`.
+6. Download `rag_outputs.zip` from the `FileLink` output or from the **Output** tab on the right side.
 
-```python
-!pip install -q faiss-cpu rank_bm25 datasets sentence-transformers
-```
+### Part 2: Make the report tables and charts (`output-code.ipynb`)
 
-### 3. Run all cells
+This notebook reads the saved C1 to C4 `.json` files from `/kaggle/input/`. It does not need a GPU or Internet.
 
-Click **Run All**, or run cells `1` to `7` in order. The notebook will:
-
-1. Load `rajpurkar/squad_v2` and build the 50-document corpus, the dev set, and the test set.
-2. Build the basic chunks (5,262) and the recursive chunks (3,429), with FAISS and BM25 indexes.
-3. Load `Qwen/Qwen2.5-1.5B-Instruct` and test C1, C2, C3, and C4 on all 120 test questions.
-4. Save the predictions, config, prompts, summary metrics, a plot, and a zip file.
-
-### 4. Download the outputs
-
-All files are saved in `/kaggle/working/rag_outputs/`. They are also zipped to `/kaggle/working/rag_outputs.zip`. Download the zip from the `FileLink` output or from the **Output** tab on the right side.
+1. Unzip `rag_outputs.zip` on your computer.
+2. In Kaggle, create a new **Dataset** and upload the files from `rag_outputs`. (The notebook must find `C1_Naive.json`, so keep the file names.)
+3. Create a new notebook, upload `output-code.ipynb`, and add the dataset with **Add Input**.
+4. Click **Run All**. The notebook will:
+   1. Show a table of questions, gold answers, model outputs, and scores for each condition.
+   2. Show the error examples used in the report.
+   3. Save `fig1_scores.png` (retrieval and answer scores) and `fig2_word_counts.png` (model answer length vs. gold answer length) in `/kaggle/working/`.
 
 ---
 
@@ -174,16 +183,24 @@ All files are saved in `/kaggle/working/rag_outputs/`. They are also zipped to `
 ```text
 .
 ├── README.md                     # This file
-├── llm-assignment-2.ipynb        # Main notebook (C1-C4 pipeline and evaluation)
+├── main-code.ipynb               # Experiment: C1-C4 pipeline and evaluation
+├── output-code.ipynb             # Tables, error examples, and charts for the report
 ├── report.pdf                    # IEEE two-column report
-└── rag_outputs/                  # Created when you run the notebook
-    ├── config_and_prompts.json   # Settings, model IDs, and prompts
-    ├── C1_Naive.csv / .json      # Predictions and scores for C1
-    ├── C2_Hybrid.csv / .json     # Predictions and scores for C2
-    ├── C3_Recursive.csv / .json  # Predictions and scores for C3
-    ├── C4_Combined.csv / .json   # Predictions and scores for C4
-    ├── summary.csv / .json       # Summary metrics for all four conditions
-    └── fig1_scores.png           # Chart of retrieval and generation scores
+├── AIUsageLog.docx               # AI usage log
+├── rag_outputs/                  # Results from the notebooks
+│   ├── config_and_prompts.json   # Settings, model IDs, and prompts
+│   ├── C1_Naive.csv / .json      # Predictions and scores for C1
+│   ├── C2_Hybrid.csv / .json     # Predictions and scores for C2
+│   ├── C3_Recursive.csv / .json  # Predictions and scores for C3
+│   ├── C4_Combined.csv / .json   # Predictions and scores for C4
+│   ├── summary.csv / .json       # Summary metrics for all four conditions
+│   ├── fig1_scores.png           # Chart of retrieval and answer scores
+│   └── fig2_word_counts.png      # Chart of model answer length vs. gold length
+└── screenshots/                  # Images used in the report
+    ├── fig1_scores.png           # Chart of retrieval and answer scores
+    ├── fig2_word_counts.png      # Chart of model answer length vs. gold length
+    ├── metrics_table.png         # Results table
+    └── metricScreenshots.png     # Code and output of the summary step
 ```
 
 ---
